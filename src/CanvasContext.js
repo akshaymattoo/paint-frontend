@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import io from "socket.io-client";
 const CanvasContext = React.createContext();
 
-const socket = io.connect("https://paint-server.onrender.com:3001");
+const socket = io.connect("https://paint-server.onrender.com");
 
 export const CanvasProvider = ({ children }) => {
   const [isDrawing, setIsDrawing] = useState(false);
