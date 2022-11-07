@@ -2,7 +2,12 @@ import React, { useContext, useRef, useState } from "react";
 import io from "socket.io-client";
 const CanvasContext = React.createContext();
 
-const socket = io.connect("https://paint-server.onrender.com");
+console.log(process.env.REACT_APP_ENV);
+const socket_url =
+  process.env.REACT_APP_ENV === "development"
+    ? "http://localhost:3001"
+    : "https://paint-server.onrender.com";
+const socket = io.connect(socket_url);
 
 export const CanvasProvider = ({ children }) => {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -37,16 +42,6 @@ export const CanvasProvider = ({ children }) => {
     setIsDrawing(true);
   };
 
-  // const startMobileDrawing = (event) => {
-  //   event.preventDefault();
-  //   const offsetX = event.touches[0].clientX;
-  //   const offsetY = event.touches[0].clientY;
-
-  //   contextRef.current.beginPath();
-  //   contextRef.current.moveTo(offsetX, offsetY);
-  //   setIsDrawing(true);
-  // };
-
   const newDrawing = ({ mouseX, mouseY }) => {
     console.log("In new drawing ", mouseX, mouseY);
 
@@ -70,20 +65,6 @@ export const CanvasProvider = ({ children }) => {
       mouseY: offsetY,
     });
   };
-
-  // const mobileDraw = (event) => {
-  //   if (!isDrawing) {
-  //     return;
-  //   }
-  //   const offsetX = event.touches[0].clientX;
-  //   const offsetY = event.touches[0].clientY;
-  //   contextRef.current.lineTo(offsetX, offsetY);
-  //   contextRef.current.stroke();
-  //   socket.emit("mouse", {
-  //     mouseX: offsetX,
-  //     mouseY: offsetY,
-  //   });
-  // };
 
   function dot(x, y) {
     contextRef.current.beginPath();
@@ -134,8 +115,8 @@ export const CanvasProvider = ({ children }) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "white";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    canvasRef.current = canvas;
+    //context.fillRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
   };
 
   return (
