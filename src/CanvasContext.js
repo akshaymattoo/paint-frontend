@@ -30,7 +30,7 @@ export const CanvasProvider = ({ children }) => {
     context.scale(2, 2);
     context.lineCap = "round";
     context.strokeStyle = "black";
-    context.lineWidth = 5;
+    context.lineWidth = 20;
     contextRef.current = context;
     socket.on("mouse", newDrawing);
   };
@@ -72,7 +72,7 @@ export const CanvasProvider = ({ children }) => {
     contextRef.current.arc(x, y, 1, 0, Math.PI * 2, true);
     contextRef.current.fill();
     contextRef.current.stroke();
-    contextRef.current.closePath();
+    // contextRef.current.closePath();
   }
 
   function line(fromx, fromy, tox, toy) {
